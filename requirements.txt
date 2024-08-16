@@ -1,5 +1,4 @@
 attrs==24.2.0
-beautifulsoup4==4.12.3
 certifi==2024.7.4
 h11==0.14.0
 idna==3.7
