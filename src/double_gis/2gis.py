@@ -57,25 +57,36 @@ class DoubleGisBrowser:
 
         name = self.valid_class_content(sub_browser, "_tvxwjf", "_cwjbox")
 
-        category = sub_browser.find_element(By.CLASS_NAME, '_1idnaau').text
+        try:
+            category = sub_browser.find_element(By.CLASS_NAME, '_1idnaau').text
+        except NoSuchElementException:
+            category = ""
 
         address = self.valid_class_content(sub_browser, "_oqoid", "_er2xx9")
 
-        full_address = sub_browser.find_element(By.CLASS_NAME, '_1p8iqzw').text
+        try:
+            full_address = sub_browser.find_element(By.CLASS_NAME, '_1p8iqzw').text
+        except NoSuchElementException:
+            full_address = ""
 
         result = geocode(f"{address} {full_address}", self.db)
 
-        phone_block = sub_browser.find_element(By.CLASS_NAME, '_b0ke8')
-
         sub_browser.execute_script("document.querySelector('._1rkbbi0x').scrollTo(0, 300)")
-        phone_block.find_element(By.TAG_NAME, 'button').click()
-        time.sleep(self.sleep_time)
+        # Phone
+        try:
+            phone_block = sub_browser.find_element(By.CLASS_NAME, '_b0ke8')
+            phone_block.find_element(By.TAG_NAME, 'button').click()
+            time.sleep(self.sleep_time)
 
-        phone = sub_browser.find_element(By.TAG_NAME, 'bdo').text
-
-        email = sub_browser.find_element(By.CSS_SELECTOR, 'div._599hh > div:nth-child(4)').text
-
-        if email in ['WhatsApp', 'Telegram']:
+            phone = sub_browser.find_element(By.TAG_NAME, 'bdo').text
+        except NoSuchElementException:
+            phone = None
+        # email
+        try:
+            email = sub_browser.find_element(By.CSS_SELECTOR, 'div._599hh > div:nth-child(4)').text
+            if email in ['WhatsApp', 'Telegram']:
+                email = None
+        except NoSuchElementException:
             email = None
 
         sub_browser.quit()
@@ -113,12 +124,19 @@ class DoubleGisBrowser:
         # self.driver.maximize_window()
 
         # close footer
-        footer = self.driver.find_element(By.TAG_NAME, 'footer')
-        footer.find_element(By.TAG_NAME, 'svg').click()
+        # footer = self.driver.find_element(By.TAG_NAME, 'footer')
+        # footer.find_element(By.TAG_NAME, 'svg').click()
 
-        # search data
+        # # search data
         self.search_2gis_form(location)
         time.sleep(1)
+
+        # search_form = self.driver.find_element(By.XPATH, '//input[@placeholder="Поиск в 2ГИС"]')
+        # search_form.send_keys('test')
+        # search_form.send_keys(Keys.CONTROL + "A")
+        # search_form.send_keys(Keys.BACKSPACE)
+        # time.sleep(3)
+
         self.search_2gis_form(search)
 
         # close filter
@@ -178,9 +196,9 @@ class DoubleGisBrowser:
 if __name__ == '__main__':
     browser = DoubleGisBrowser()
     gis_2 = "https://2gis.ru/"
-    city = "Набережные Челны"
-    departments = 'b2c'
-    search = "Автосервис"
+    city = "Мариинский Посад"
+    departments = 'b2c chuvashiya'
+    search = "Автомагазин"
     if browser.get_count() <= 900:
         browser.double_gis_parse_url(gis_2, location=city, department=departments)
     time.sleep(5)

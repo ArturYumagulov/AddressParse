@@ -8,7 +8,6 @@ from models.address import ResponseCount
 
 def geocode(address: str, db: DB) -> dict:
     """Функция парсинга адреса из Яндекс"""
-
     result: dict = {}
     url = (f"{YANDEX_URL}?"
            f"apikey={YANDEX_API_KEY}"
