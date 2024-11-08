@@ -2,7 +2,6 @@ from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, BigInteger, Date
 from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped
-
 from sqlalchemy_utils import URLType
 
 
@@ -24,11 +23,12 @@ class Address(Base):
 
     id: Mapped[int] = Column(Integer, primary_key=True, autoincrement=True)
     code: Mapped[str] = mapped_column(String, nullable=True)
+    code_1с: Mapped[str] = mapped_column(String, nullable=True)
     chicago_code: Mapped[int] = mapped_column(BigInteger, nullable=True)
     point_id: Mapped[str] = mapped_column(String, nullable=True)
     name: Mapped[str] = mapped_column(String)
     ya_name: Mapped[str] = mapped_column(String, nullable=True)
-    category: Mapped[str] = mapped_column(String)
+    category: Mapped[str] = mapped_column(String, nullable=True)
     address: Mapped[str] = mapped_column(String)
     full_address: Mapped[str] = mapped_column(String)
     phone: Mapped[str] = mapped_column(String, nullable=True)
@@ -48,6 +48,8 @@ class Address(Base):
     latitude: Mapped[str] = mapped_column(String, nullable=True)
     longitude: Mapped[str] = mapped_column(String, nullable=True)
     source_url: Mapped[str] = mapped_column(String, nullable=True)
+    inn: Mapped[str] = mapped_column(String, nullable=True)
+    legal_name: Mapped[str] = mapped_column(String, nullable=True)
 
 
 class ResponseCount(Base):

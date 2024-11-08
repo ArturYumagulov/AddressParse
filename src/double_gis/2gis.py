@@ -15,7 +15,9 @@ from src.yandex_map.geocoder import geocode
 
 class DoubleGisBrowser:
     def __init__(self):
-        self.driver: webdriver = webdriver.Chrome()
+        self.options = webdriver.ChromeOptions()
+        # self.options.add_argument("--headless")
+        self.driver: webdriver = webdriver.Chrome(options=self.options)
         self.urls_list = []
         self.sleep_time = 2
         self.db = DB()
@@ -50,7 +52,7 @@ class DoubleGisBrowser:
     def get_point_data(self, url: str, point_id: str = None, depart: str = None) -> dict:
         """Сбор данных со страницы"""
 
-        sub_browser = webdriver.Chrome()
+        sub_browser = webdriver.Chrome(options=self.options)
         sub_browser.get(url)
 
         time.sleep(self.sleep_time)
@@ -196,8 +198,8 @@ class DoubleGisBrowser:
 if __name__ == '__main__':
     browser = DoubleGisBrowser()
     gis_2 = "https://2gis.ru/"
-    city = "Мариинский Посад"
-    departments = 'b2c chuvashiya'
+    city = "Казань"
+    departments = 'b2c'
     search = "Автомагазин"
     if browser.get_count() <= 900:
         browser.double_gis_parse_url(gis_2, location=city, department=departments)
